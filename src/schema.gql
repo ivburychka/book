@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  description: String
+  id: String!
+  isLend: Boolean!
+  name: String!
+  owner: User
+  ownerId: String
+  publishYear: Int
+  publisher: String
+}
+
+input CreateBookInput {
+  isLend: Boolean = false
+  name: String!
+  ownerId: String
+  publishYear: Int
+}
+
+input CreateUserInput {
+  email: String!
+  firstName: String!
+  lastName: String!
+  username: String!
+}
+
+type Mutation {
+  addBook(createBookInput: CreateBookInput!): Book!
+  createUser(createUserInput: CreateUserInput!): User!
+}
+
+type Query {
+  books: [Book!]!
+  getBook(id: String!): Book!
+  user(id: String!): User!
+}
+
+type User {
+  books: [Book]!
+  email: String!
+  firstName: String!
+  id: String!
+  lastName: String!
+  username: String!
+}

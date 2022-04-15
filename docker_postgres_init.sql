@@ -1,0 +1,5 @@
+CREATE USER test;
+ALTER USER test WITH PASSWORD 'mysecretpassword';
+
+CREATE DATABASE "test-db";
+GRANT ALL PRIVILEGES ON DATABASE "test-db" TO test;
