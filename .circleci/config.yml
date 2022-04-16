@@ -17,8 +17,8 @@ jobs:
 
     environment:
       NODE_ENV: test
-      POSTGRES_USER: circleci
-      POSTGRES_DB: circleci
+      TEST_POSTGRES_USER: circleci
+      TEST_POSTGRES_PASSWORD: circleci
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
     steps:
