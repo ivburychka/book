@@ -9,11 +9,10 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.13.2
-#      - image: cimg/postgres:14.2
-      - image: cimg/postgres:10.17
+      - image: cimg/postgres:14.0
         environment:
-          POSTGRES_USER: api-user
-          POSTGRES_DB: book-db
+          POSTGRES_USER: circleci
+          POSTGRES_DB: circleci
           POSTGRES_HOST_AUTH_METHOD: "trust"
 
     environment:
