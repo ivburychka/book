@@ -12,8 +12,8 @@ jobs:
 #      - image: cimg/postgres:14.2
       - image: cimg/postgres:10.17
         environment:
-          POSTGRES_USER: circleci
-          POSTGRES_DB: circleci
+          POSTGRES_USER: api-user
+          POSTGRES_DB: book-db
           POSTGRES_HOST_AUTH_METHOD: "trust"
 
     environment:
