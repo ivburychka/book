@@ -8,8 +8,10 @@ workflows:
 jobs:
   test:
     docker:
-      - image: cimg/node:16.13.2
-      - image: cimg/postgres:14.2
+#      - image: cimg/node:16.13.2
+#      - image: cimg/postgres:14.2
+      - image: cimg/node:10.23
+      - image: cimg/postgres:10.17
         environment:
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
