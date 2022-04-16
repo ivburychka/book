@@ -9,7 +9,7 @@ jobs:
   test:
     docker:
       - image: cimg/node:16.13.2
-      - image: cimg/postgres:14.2
+      - image: cimg/postgres:14.0
         environment:
           POSTGRES_USER: circleci
           POSTGRES_DB: circleci
@@ -17,8 +17,8 @@ jobs:
 
     environment:
       NODE_ENV: test
-      POSTGRES_USER: circleci
-      POSTGRES_DB: circleci
+      TEST_POSTGRES_USER: circleci
+      TEST_POSTGRES_PASSWORD: circleci
       POSTGRES_HOST_AUTH_METHOD: "trust"
 
     steps:
@@ -33,5 +33,5 @@ jobs:
           paths:
             - node_modules
           key: v1-deps-{{ checksum "package.json" }}
-            - run: yarn test
-            - run: yarn test:e2e
+      - run: yarn test
+      - run: yarn test:e2e
