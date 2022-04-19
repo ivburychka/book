@@ -21,6 +21,7 @@ import { DatabaseModule } from './database/database.module';
       // playground: true,
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      cors: true,
     }),
     BooksModule,
     ConfigModule.forRoot(),
