@@ -1,6 +1,19 @@
 version: '3.8'
 
 services:
+  api:
+    build: .
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: api-user
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DATABASE: book-db
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
   postgres:
     image: postgres
     environment:
@@ -11,5 +24,4 @@ services:
       - '5432:5432'
     volumes:
       - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
-
-
+      - ./data/db:/var/lib/postgresql/data
