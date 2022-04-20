@@ -21,9 +21,13 @@ export class User {
   @Field()
   lastName: string;
 
-  @Column()
+  @Column({ unique: true })
   @Field()
   email: string;
+
+  @Column({ nullable: true })
+  @Field({ nullable: true })
+  password?: string;
 
   @OneToMany(() => Book, (b) => b.owner, {
     onDelete: 'SET NULL',

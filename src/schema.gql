@@ -24,6 +24,7 @@ input CreateUserInput {
   email: String!
   firstName: String!
   lastName: String!
+  password: String!
   username: String!
 }
 
@@ -44,5 +45,6 @@ type User {
   firstName: String!
   id: String!
   lastName: String!
+  password: String
   username: String!
 }
