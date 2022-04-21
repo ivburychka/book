@@ -1,27 +1,26 @@
 import { join } from 'path';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import * as dotenv from 'dotenv';
-import { ConfigService } from '@nestjs/config';
+import { DataSource } from 'typeorm';
 dotenv.config();
 
-const dbConfig: (configService: ConfigService) => PostgresConnectionOptions = (
-  configService: ConfigService,
+const dbConfig: () => PostgresConnectionOptions = (
 ) => {
-  const isTestEnv = configService.get('NODE_ENV') === 'test';
+  const isTestEnv = process.env.NODE_ENV === 'test';
 
   return {
     type: 'postgres',
-    host: configService.get('POSTGRES_HOST'),
-    port: Number.parseInt(configService.get('POSTGRES_PORT') || '5432', 10),
+    host: process.env.POSTGRES_HOST,
+    port: process.env.POSTGRES_PORT ? Number.parseInt(process.env.POSTGRES_PORT, 10) : 5432,
     username: isTestEnv
-      ? configService.get('TEST_POSTGRES_USER')
-      : configService.get('POSTGRES_USER'),
+      ? process.env.TEST_POSTGRES_USER
+      : process.env.POSTGRES_USER,
     password: isTestEnv
-      ? configService.get('TEST_POSTGRES_PASSWORD')
-      : configService.get('POSTGRES_PASSWORD'),
+      ? process.env.TEST_POSTGRES_PASSWORD
+      : process.env.POSTGRES_PASSWORD,
     database: isTestEnv
-      ? configService.get('TEST_POSTGRES_DATABASE')
-      : configService.get('POSTGRES_DATABASE'),
+      ? process.env.TEST_POSTGRES_DATABASE
+      : process.env.POSTGRES_DATABASE,
     migrations: [join(__dirname, './migrations', '*{.ts,.js}')],
     entities: [join(__dirname, 'app', '**/*.entity{.ts,.js}')],
     synchronize: false,
@@ -30,7 +29,7 @@ const dbConfig: (configService: ConfigService) => PostgresConnectionOptions = (
     migrationsTableName: 'migrations',
   };
 
-  // development: {
+  // return {
   //   type: 'postgres',
   //   host: 'localhost',
   //   port: 5432,
@@ -43,7 +42,7 @@ const dbConfig: (configService: ConfigService) => PostgresConnectionOptions = (
   //   migrationsRun: false,
   //   uuidExtension: 'uuid-ossp',
   //   migrationsTableName: 'migrations',
-  // },
+  // };
   // test: {
   //   type: 'postgres',
   //   host: 'localhost',
@@ -61,37 +60,4 @@ const dbConfig: (configService: ConfigService) => PostgresConnectionOptions = (
   // },
 };
 
-// const config: Record<string, PostgresConnectionOptions> = {
-//   development: {
-//     type: 'postgres',
-//     host: 'localhost',
-//     port: 5432,
-//     username: 'api-user',
-//     password: 'mysecretpassword',
-//     database: 'book-db',
-//     migrations: [join(__dirname, './migrations', '*{.ts,.js}')],
-//     entities: [join(__dirname, 'app', '**/*.entity{.ts,.js}')],
-//     synchronize: false,
-//     migrationsRun: false,
-//     uuidExtension: 'uuid-ossp',
-//     migrationsTableName: 'migrations',
-//   },
-//   test: {
-//     type: 'postgres',
-//     host: 'localhost',
-//     port: 5432,
-//     username: 'api-user',
-//     password: 'mysecretpassword',
-//     // database: 'test-db',
-//     database: 'book-db',
-//     migrations: [join(__dirname, './migrations', '*{.ts,.js}')],
-//     entities: [join(__dirname, 'app', '**/*.entity{.ts,.js}')],
-//     synchronize: true,
-//     dropSchema: true,
-//     migrationsRun: false,
-//     uuidExtension: 'uuid-ossp',
-//   },
-// };
-
-// export default new DataSource(config()[process.env.NODE_ENV!]);
-export default dbConfig;
+export default new DataSource(dbConfig());

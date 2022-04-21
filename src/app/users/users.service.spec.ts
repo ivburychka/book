@@ -41,6 +41,7 @@ describe('UsersService', () => {
         email: 'test@email.com',
         firstName: 'firstTest',
         lastName: 'lastTest',
+        password: 'q1w2e3r4',
       };
 
       userRepositoryMock.create?.mockReturnValue(createUserInput);
