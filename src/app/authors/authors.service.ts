@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAuthorInput } from './dto/create-author.input';
 import { UpdateAuthorInput } from './dto/update-author.input';
+import { User } from '../users/entities/user.entity';
+import { Repository } from 'typeorm';
+import { Author } from './entities/author.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FindAuthorInput } from './dto/find-author.input';
 
 @Injectable()
 export class AuthorsService {
-  create(createAuthorInput: CreateAuthorInput) {
-    return 'This action adds a new author';
+  constructor(
+    @InjectRepository(Author) private readonly authorRepo: Repository<Author>,
+  ) {}
+
+  async create(
+    createAuthorInput: CreateAuthorInput,
+    user: User,
+  ): Promise<Author> {
+    const author = this.authorRepo.create({
+      createBy: user.id,
+      ...createAuthorInput,
+    });
+    await this.authorRepo.save(author);
+
+    return author;
   }
 
-  findAll() {
-    return `This action returns all authors`;
+  findAll(): Promise<Author[]> {
+    return this.authorRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} author`;
+  async findOne(params: FindAuthorInput): Promise<Author | null> {
+    const book = await this.authorRepo.findOneBy(params);
+    if (!book) {
+      throw new NotFoundException('Author not found');
+    }
+    return book;
   }
 
-  update(id: number, updateAuthorInput: UpdateAuthorInput) {
-    return `This action updates a #${id} author`;
-  }
+  async update(
+    id: string,
+    updateAuthorInput: UpdateAuthorInput,
+    user: User,
+  ): Promise<Author> {
+    const author = await this.authorRepo.findOneBy({ id });
+    if (!author) {
+      throw new NotFoundException('Author not found');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} author`;
+    if (author.createBy === user.id) {
+      throw new ForbiddenException("You can't update author");
+    }
+
+    await this.authorRepo.update(author.id, {
+      ...author,
+      ...updateAuthorInput,
+    });
+
+    return (await this.findOne({ id: author.id }))!;
   }
 }

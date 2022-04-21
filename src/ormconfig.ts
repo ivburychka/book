@@ -4,8 +4,7 @@ import * as dotenv from 'dotenv';
 import { DataSource } from 'typeorm';
 dotenv.config();
 
-const dbConfig: () => PostgresConnectionOptions = (
-) => {
+const dbConfig: () => PostgresConnectionOptions = () => {
   const isTestEnv = process.env.NODE_ENV === 'test';
 
   return {

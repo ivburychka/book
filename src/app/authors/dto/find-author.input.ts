@@ -1,10 +1,10 @@
 import { InputType, Field } from '@nestjs/graphql';
 
 @InputType()
-export class CreateAuthorInput {
-  @Field()
-  name: string;
+export class FindAuthorInput {
+  @Field({ nullable: true })
+  id?: string;
 
   @Field({ nullable: true })
-  additional?: string;
+  name?: string;
 }

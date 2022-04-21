@@ -2,7 +2,19 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Author {
+  additional: String
+  createAt: DateTime
+  createBy: String
+  id: String!
+  name: String!
+  updateAt: DateTime
+  updateBy: String
+}
+
 type Book {
+  createAt: DateTime
+  createBy: String
   description: String
   id: String!
   isLend: Boolean!
@@ -11,6 +23,13 @@ type Book {
   ownerId: String
   publishYear: Int
   publisher: String
+  updateAt: DateTime
+  updateBy: String
+}
+
+input CreateAuthorInput {
+  additional: String
+  name: String!
 }
 
 input CreateBookInput {
@@ -28,24 +47,48 @@ input CreateUserInput {
   username: String!
 }
 
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input FindAuthorInput {
+  id: String
+  name: String
+}
+
 type Mutation {
   addBook(createBookInput: CreateBookInput!): Book!
+  authorCreate(createAuthorInput: CreateAuthorInput!): Author!
   createUser(createUserInput: CreateUserInput!): User!
+  updateAuthor(updateAuthorInput: UpdateAuthorInput!): Author!
 }
 
 type Query {
+  author(findAuthorInput: FindAuthorInput!): Author
+  authors: [Author!]!
   books: [Book!]!
   getBook(id: String!): Book!
   user(id: String!): User!
 }
 
+input UpdateAuthorInput {
+  additional: String
+  id: String!
+  name: String
+}
+
 type User {
   books: [Book]!
+  createAt: DateTime
+  createBy: String
   email: String!
   firstName: String!
   id: String!
   lastName: String!
   password: String
   phone: String
+  updateAt: DateTime
+  updateBy: String
   username: String!
 }
